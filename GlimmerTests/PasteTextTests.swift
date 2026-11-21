@@ -31,9 +31,9 @@ struct PasteTextTests {
         #expect(prepared == head)
     }
 
-    @Test func chordIsTwoKeysAndCollidesWithNoDefault() {
+    @Test func macPasteChordLeavesWindowsPasteAvailable() {
         let chord = PasteText.chord
-        #expect(chord.ctrl && !chord.alt && !chord.shift && !chord.cmd)
+        #expect(chord.ctrl && chord.alt && chord.shift && !chord.cmd)
         #expect(chord.keyChar == "v")
         let defaults: [HotkeyChord] = [.defaultQuit, .defaultStats, .defaultBookmark, .defaultReleasePointer, .defaultMiniPlayer]
         #expect(!defaults.contains(chord))

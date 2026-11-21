@@ -89,8 +89,8 @@ extension InputForwarder: StreamInputViewDelegate {
             return
         }
         // Paste types the Mac clipboard into the PC independently of keyboard layout.
-        if !event.isARepeat, PasteText.chord.matches(event: event, modifiers: mods) {
-            pasteClipboardAsText()
+        if PasteText.chord.matches(event: event, modifiers: mods) {
+            if !event.isARepeat { pasteClipboardAsText() }
             return
         }
         // Composition owns Escape; a reconnect must still allow the pointer hold.

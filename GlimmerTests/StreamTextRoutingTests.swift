@@ -43,6 +43,18 @@ struct StreamTextRoutingTests {
         #expect(backend.keyboard.isEmpty)
     }
 
+    @Test func windowsCopyAndPasteReachThePCAsControlChords() throws {
+        let (forwarder, backend, view) = ready()
+        defer { forwarder.detach() }
+        view.keyDown(with: try key(kVK_ANSI_C, mods: .control, chars: "c"))
+        view.keyDown(with: try key(kVK_ANSI_V, mods: .control, chars: "v"))
+        #expect(backend.keyboard.map(\.keyCode) == [
+            VKScanCode(vk: 0x43).wireCode, VKScanCode(vk: 0x56).wireCode
+        ])
+        #expect(backend.keyboard.allSatisfy { $0.modifiers == Int8(StreamProtocol.MODIFIER_CTRL) })
+        #expect(backend.texts.isEmpty)
+    }
+
     private func mark(_ view: StreamInputView) {
         view.setMarkedText("ni", selectedRange: NSRange(location: 2, length: 0),
                            replacementRange: NSRange(location: NSNotFound, length: 0))

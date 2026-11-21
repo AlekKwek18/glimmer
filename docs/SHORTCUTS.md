@@ -26,10 +26,10 @@ Stats”.
 | Pointer                      | Control-P       | Toggles captured/free; keeps choice across focus changes.                                         |
 | Keyboard and mouse           | Control-Shift-P | Releases both to this Mac while the stream continues; press again or click the picture to return. |
 
-| Text and diagnostics | Default   | Result                                        |
-| -------------------- | --------- | --------------------------------------------- |
-| Paste                | Control-V | Types Mac text into PC.                       |
-| Bookmark             | Control-B | With telemetry enabled; otherwise sent to PC. |
+| Text and diagnostics | Default                | Result                                        |
+| -------------------- | ---------------------- | --------------------------------------------- |
+| Paste                | Control-Option-Shift-V | Types Mac text into PC.                       |
+| Bookmark             | Control-B              | With telemetry enabled; otherwise sent to PC. |
 
 ⌃Z (Control-Z) is the default for “Show or Hide Stream Stats”; ⌃Q is the default
 for “Stop Streaming”. Change either in Settings › Input. Saved custom bindings
@@ -60,11 +60,12 @@ the setting is on.
 
 ## Copy and paste
 
-| Action    | Result                                       |
-| --------- | -------------------------------------------- |
-| Control-V | Up to 4,096 UTF-8 bytes; no files or images. |
-| Command-V | Same, when Command stays with Mac.           |
-| Control-C | Copies within PC; no clipboard sync.         |
+| Action                 | Result                                      |
+| ---------------------- | ------------------------------------------- |
+| Control-Option-Shift-V | Types Mac text, up to 4,096 UTF-8 bytes.    |
+| Control-V              | Pastes from the PC clipboard.               |
+| Command-V              | Types Mac text when Command stays with Mac. |
+| Control-C              | Copies within PC; no clipboard sync.        |
 
 ## Mac shortcuts and Game Mode
 

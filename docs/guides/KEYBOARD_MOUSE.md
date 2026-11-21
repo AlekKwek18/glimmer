@@ -43,7 +43,7 @@ keyboard on iPhone and iPad.
 
 1. Copy Mac text.
 2. Focus the stream.
-3. Press Control-V.
+3. Press Control-Option-Shift-V.
 
 {% hint style="info" %}
 

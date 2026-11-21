@@ -8,8 +8,8 @@ import AppKit
 
 /// The text rules, pure so they are testable without a pasteboard or a stream.
 enum PasteText {
-    /// Two keys like every other in-stream chord, for when ⌘V goes to the game.
-    static let chord = HotkeyChord(ctrl: true, alt: false, shift: false, cmd: false, keyChar: "v")
+    /// Leave the PC's usual paste shortcuts available.
+    static let chord = HotkeyChord(ctrl: true, alt: true, shift: true, cmd: false, keyChar: "v")
 
     static let maxBytes = InputText.maxBytes
     static func prepared(_ text: String) -> String { InputText.prepared(text) }
