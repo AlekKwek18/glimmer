@@ -167,6 +167,7 @@ final class AWDLHelperManager: ObservableObject {
         var daemonJobMissing: () async -> Bool = { false }
         var daemonLayout: () async -> AWDLHelperRecovery.Layout = { .current }
         var sleep: (Duration) async throws -> Void = { try await Task.sleep(for: $0) }
+        var daemonIsBundled = true
         var telemetry: (Bool, UInt64) -> Void = {
             TelemetryCounters.shared.setAWDLHelper(.init(suppressing: $0, reSuppressTotal: $1))
         }
@@ -211,11 +212,7 @@ final class AWDLHelperManager: ObservableObject {
     static let loginItemsHelpURL = URL(string:
         "https://support.apple.com/guide/mac-help/change-login-items-extensions-settings-mtusr003/mac")
 
-    /// `.notFound` is ambiguous: a genuine packaging miss, or a wedged record while
-    /// the daemon IS present. Tell them apart so the message isn't a red herring.
-    private static var notFoundMessage: String {
-        daemonIsBundled ? wedgedRegistrationMessage : "Helper not found in the app bundle."
-    }
+    private static let missingHelperMessage = "Wi-Fi smoothing requires a signed build with the network helper."
 
     private static func isWedgedRegistration(_ ns: NSError) -> Bool {
         ns.domain == "SMAppServiceErrorDomain" && ns.code == 1
@@ -232,14 +229,15 @@ final class AWDLHelperManager: ObservableObject {
             reachable: { await client.currentStatus() != nil },
             count: { await client.reSuppressCount() },
             daemonJobMissing: { await AWDLHelperRecovery.daemonJobMissing() },
-            daemonLayout: { await AWDLHelperRecovery.daemonLayout() }), defaults: PersistentStorage.defaults)
+            daemonLayout: { await AWDLHelperRecovery.daemonLayout() },
+            daemonIsBundled: Self.daemonIsBundled), defaults: PersistentStorage.defaults)
     }
 
     init(operations: Operations, defaults: UserDefaults) {
         self.operations = operations
         self.defaults = defaults
-        enabledIntent = defaults.object(forKey: Self.enabledIntentKey) as? Bool
-            ?? (operations.status() == .enabled || operations.status() == .requiresApproval)
+        enabledIntent = operations.daemonIsBundled && (defaults.object(forKey: Self.enabledIntentKey) as? Bool
+            ?? (operations.status() == .enabled || operations.status() == .requiresApproval))
         refresh()
     }
 
@@ -271,18 +269,23 @@ final class AWDLHelperManager: ObservableObject {
         set { defaults.set(newValue, forKey: Self.promptSuppressedKey) }
     }
 
-    /// Whether to show the launch nudge: only while not yet enabled and the user
-    /// hasn't dismissed it for good.
-    var shouldPromptToEnable: Bool { !promptSuppressed && state != .enabled }
+    var isHelperBundled: Bool { operations.daemonIsBundled }
+
+    /// Offer registration only when the bundle can supply the daemon.
+    var shouldPromptToEnable: Bool { isHelperBundled && !promptSuppressed && state != .enabled }
 
     func refresh() {
+        guard isHelperBundled else {
+            state = .unavailable(Self.missingHelperMessage)
+            return
+        }
         let status = operations.status()
         let newState: State
         switch status {
         case .enabled:          newState = .enabled
         case .requiresApproval: newState = .requiresApproval
         case .notRegistered:    newState = .notRegistered
-        case .notFound:         newState = .unavailable(Self.notFoundMessage)
+        case .notFound:         newState = .unavailable(Self.wedgedRegistrationMessage)
         @unknown default:       newState = .unavailable("Unknown status")
         }
         if newState != state { state = newState }
@@ -295,6 +298,7 @@ final class AWDLHelperManager: ObservableObject {
     /// Register the daemon. The first time, macOS surfaces a one-time approval in
     /// System Settings → General → Login Items & Extensions.
     func enable(migratingLayout: Bool = false) {
+        guard isHelperBundled else { return }
         setIntent(true)
         let (previous, restoration, identifier) = prepareRegistration()
         // Capture predecessors before publishing this task: reading serviceTask inside
@@ -380,6 +384,7 @@ final class AWDLHelperManager: ObservableObject {
     /// Stop suppressing, then unregister the daemon (launchd unloads it; awdl0
     /// returns to normal Continuity behaviour).
     func disable() {
+        guard isHelperBundled else { return }
         setIntent(false)
         streamRequested = false
         let (previous, restoration, identifier) = prepareRegistration()

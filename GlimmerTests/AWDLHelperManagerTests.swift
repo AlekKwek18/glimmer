@@ -17,7 +17,6 @@ final class HelperGate {
             entered.signal()
         }
     }
-
     func open() {
         continuation?.resume()
         continuation = nil
@@ -57,7 +56,7 @@ final class HelperHarness {
         defaults = try #require(UserDefaults(suiteName: suite))
     }
 
-    func makeManager() -> AWDLHelperManager {
+    func makeManager(daemonIsBundled: Bool = true) -> AWDLHelperManager {
         AWDLHelperManager(operations: .init(
             status: { self.status },
             register: {
@@ -111,6 +110,7 @@ final class HelperHarness {
                     try await Task.sleep(for: .seconds(3600))
                 }
             },
+            daemonIsBundled: daemonIsBundled,
             telemetry: { suppressing, _ in self.gauge = suppressing }), defaults: defaults)
     }
 

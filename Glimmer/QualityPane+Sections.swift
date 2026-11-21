@@ -60,6 +60,7 @@ extension QualityPane {
                         .foregroundStyle(.secondary)
                 }
             }
+            .disabled(!awdl.isHelperBundled)
             .accessibilityLabel("Smooth out Wi-Fi stutter")
             .help("Installs a small helper that pauses AirDrop's radio for each stream.")
             helperStatus
@@ -81,7 +82,9 @@ extension QualityPane {
                 Button("Open Login Items") { awdl.openSystemSettings() }
             }
         }
-        if case .unavailable(let why) = awdl.state {
+        if case .unavailable(let why) = awdl.state, !awdl.isHelperBundled {
+            Text(why).font(.footnote).foregroundStyle(.secondary)
+        } else if case .unavailable(let why) = awdl.state {
             VStack(alignment: .leading, spacing: 4) {
                 Label("Network helper unavailable: \(why)", systemImage: "xmark.octagon")
                     .font(.footnote).foregroundStyle(.red)

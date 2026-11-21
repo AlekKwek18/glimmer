@@ -8,6 +8,20 @@ import Testing
 @testable import Glimmer
 
 struct AWDLHelperTests {
+    @Test @MainActor func missingHelperNeverUsesTheInstalledDaemon() async throws {
+        let harness = try HelperHarness()
+        defer { harness.cleanUp() }
+        let manager = harness.makeManager(daemonIsBundled: false)
+        manager.enable()
+        manager.reconcileAfterUpdate()
+        manager.suppressForStream()
+        await Task.yield()
+
+        #expect(!manager.isRegistered)
+        #expect(!manager.shouldPromptToEnable)
+        #expect(harness.events.isEmpty)
+    }
+
     @Test func oldPeerCannotReleaseItsReplacement() async {
         let up = Mutex(false)
         let suppressor = AWDLSuppressor(interfaceIsUp: { up.withLock { $0 } }, runIfconfig: { _ in
