@@ -224,7 +224,7 @@ extension StreamWindow {
         displayLayer.sampleBufferRenderer.flush(removingDisplayedImage: true) { }
         streamDelegate.onFullScreenSettled = nil
         NSApp.activate()
-        if let main = NSApp.windows.first(where: { $0.identifier?.rawValue == "main" || $0.title == "Glimmer" }) {
+        if let main = NSApp.windows.first(where: { $0.identifier?.rawValue == "main" || $0.title == GlimmerApp.displayName }) {
             main.makeKeyAndOrderFront(nil)
         }
         completeVisualClose()

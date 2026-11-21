@@ -130,7 +130,7 @@ struct MainWindow: View {
                 .help("Settings")
             }
         }
-        .navigationTitle("Glimmer")
+        .navigationTitle(GlimmerApp.displayName)
     }
 
     private func navigateLauncher(_ command: LauncherCommand) {

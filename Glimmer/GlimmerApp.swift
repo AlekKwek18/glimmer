@@ -33,6 +33,8 @@ private let launchedAtLogin = ProcessInfo.processInfo.arguments.contains("--laun
 
 /// The app itself; `GlimmerMain` starts it unless argv names a CLI command.
 struct GlimmerApp: App {
+    nonisolated static let displayName = "glimmer-touch"
+
     @NSApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
     @State private var model: AppModel
 
@@ -106,7 +108,7 @@ struct GlimmerApp: App {
     var body: some Scene {
         // `Window` (single-instance) over `WindowGroup` - `openWindow(id:)`
         // brings the existing one to front instead of spawning a duplicate.
-        Window("Glimmer", id: "main") {
+        Window(GlimmerApp.displayName, id: "main") {
             MainWindow()
                 .environment(model)
                 // 532pt content + 24pt margins per side = 580. This MUST equal the

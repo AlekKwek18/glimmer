@@ -1,6 +1,14 @@
 # Changelog
 
-## 2026.11.2 - Unreleased
+## 2026.11.3 - Unreleased
+
+- Use Control-C and Control-V to copy and paste on the PC. Use
+  Control-Option-Shift-V to type text from the Mac clipboard.
+
+- The Mac test build is named glimmer-touch and explains when Wi-Fi smoothing is
+  unavailable.
+
+## 2026.11.2
 
 - Touch the stream directly on a MacBook Pro with a PROLED XDR display when
   Sunshine on your PC supports touch input.

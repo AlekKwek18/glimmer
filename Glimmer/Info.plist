@@ -17,7 +17,7 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>$(PRODUCT_NAME)</string>
+	<string>glimmer-touch</string>
 	<key>CFBundlePackageType</key>
 	<string>$(PRODUCT_BUNDLE_PACKAGE_TYPE)</string>
 	<key>CFBundleShortVersionString</key>
@@ -46,7 +46,7 @@
 	<key>NSHumanReadableCopyright</key>
 	<string>Copyright © 2026 ugfugl.io. GNU GPL v3.</string>
 	<key>CFBundleDisplayName</key>
-	<string>Glimmer</string>
+	<string>glimmer-touch</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
 	<!-- Tell AppKit not to wrap notched MacBook panels in safe-area

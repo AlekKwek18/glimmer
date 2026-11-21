@@ -90,11 +90,11 @@ enum MenuBarPresentation {
     static func accessibilityLabel(state: MenuBarIconState, hostName: String?) -> String {
         let name = hostName ?? "your PC"
         switch state {
-        case .idle: return "Glimmer"
-        case .connecting: return "Glimmer, connecting to \(name)"
-        case .reconnecting: return "Glimmer, reconnecting to \(name)"
-        case .streaming: return "Glimmer, streaming to \(name)"
-        case .attention: return "Glimmer, needs attention"
+        case .idle: return GlimmerApp.displayName
+        case .connecting: return "\(GlimmerApp.displayName), connecting to \(name)"
+        case .reconnecting: return "\(GlimmerApp.displayName), reconnecting to \(name)"
+        case .streaming: return "\(GlimmerApp.displayName), streaming to \(name)"
+        case .attention: return "\(GlimmerApp.displayName), needs attention"
         }
     }
 

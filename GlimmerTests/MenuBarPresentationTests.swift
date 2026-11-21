@@ -33,7 +33,7 @@ struct MenuBarPresentationTests {
         model.hostRoute.receiveRoute(.tunnel)
         model.streamRoute.receiveRoute(.wired)
         #expect(model.streamingHost?.id == first.id)
-        #expect(model.menuBarAccessibilityLabel == "Glimmer, streaming to Tower")
+        #expect(model.menuBarAccessibilityLabel == "glimmer-touch, streaming to Tower")
         #expect(model.menuBarMetrics.last?.value == "Wired")
         model.streamRoute.receiveRoute(.wifi)
         #expect(model.menuBarMetrics.last?.value == "Wi-Fi")
@@ -98,8 +98,8 @@ struct MenuBarPresentationTests {
     @Test func idleKeepsTheEclipseMark() {
         #expect(MenuBarPresentation.systemImage(for: .idle) == nil)
         #expect(MenuBarPresentation.systemImage(for: .streaming) == "play.fill")
-        #expect(MenuBarPresentation.accessibilityLabel(state: .streaming, hostName: "Tower") == "Glimmer, streaming to Tower")
-        #expect(MenuBarPresentation.accessibilityLabel(state: .idle, hostName: nil) == "Glimmer")
+        #expect(MenuBarPresentation.accessibilityLabel(state: .streaming, hostName: "Tower") == "glimmer-touch, streaming to Tower")
+        #expect(MenuBarPresentation.accessibilityLabel(state: .idle, hostName: nil) == "glimmer-touch")
     }
 
     private func action(_ phase: StreamPhase = .idle, reconnecting: Bool = false,

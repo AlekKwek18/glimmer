@@ -28,7 +28,7 @@ struct JourneyMacApp: App {
     }
 
     var body: some Scene {
-        Window("Glimmer", id: "main") {
+        Window(GlimmerApp.displayName, id: "main") {
             MainWindow().environment(model).tint(Color("AccentColor"))
                 .frame(minWidth: LauncherLayout.windowWidth).glassWindowBackground()
         }

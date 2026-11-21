@@ -40,7 +40,7 @@ struct AboutPane: View {
                             .frame(width: 96, height: 96)
                     }
                     VStack(alignment: .leading, spacing: 4) {
-                        Text("Glimmer")
+                        Text(GlimmerApp.displayName)
                             .font(.system(size: 28, weight: .bold))
                             .tracking(-0.4)
                         Text("Stream your gaming PC to this Mac.")
@@ -86,7 +86,7 @@ struct AboutPane: View {
                 }
             }
             Section("License") {
-                Text("Glimmer is free software under the GNU General Public License v3. "
+                Text("\(GlimmerApp.displayName) is free software under the GNU General Public License v3. "
                     + "You may run, study, share, and modify it. There is no warranty.")
                     .font(.footnote)
                     .foregroundStyle(.secondary)
